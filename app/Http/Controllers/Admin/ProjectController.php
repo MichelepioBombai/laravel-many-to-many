@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Project;
 use App\Models\Category;
+use App\Models\Technology;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,8 +32,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.projects.create', compact('categories'));
+        $categories = Category::orderBy('label')->get();
+        $technologies = Technology::orderBy('label')->get();
+
+        return view('admin.projects.create', compact('categories', 'technologies'));
     }
 
     /**
@@ -105,8 +108,11 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
 
-        $categories = Category::all();
-        return view('admin.projects.edit', compact('project', 'categories'));
+        $categories = Category::orderBy('label')->get();
+        $technologies = Technology::orderBy('label')->get();
+        $project_technologies = $project->technologies->pluck('id')->toArray();
+
+        return view('admin.projects.edit', compact('project', 'categories', 'technologies', 'project_technologies'));
         
     }
 
@@ -139,9 +145,16 @@ class ProjectController extends Controller
         ]); 
         
         $data = $request->all();
+
+
         $project->update($data);
+
+        if(Arr::exists($data, "technologies")) $project->technologies()->sync($data["technologies"]);
+        else $project->technologies()->detach();
+
+
         return redirect()->route('admin.projects.show', $project)
-        ->with('messagge_content', 'Progetto modificato con successo');
+        ->with('messagge_content', "Progetto $project->id modificato con successo");
     }
 
     /**

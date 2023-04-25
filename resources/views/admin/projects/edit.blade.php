@@ -20,6 +20,22 @@
               <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?? $project->title }}" />
             </div>
 
+
+
+            <div class="row">
+              <div class="col-12"> 
+                <label for="category_id" class="form-label">technologies:</label>
+                <br>
+                @foreach ($technologies as $technology)
+                <input type="checkbox" id="technology-{{ $technology->id}}" value="{{ $technology->id}}" name="technologies[]" 
+                class="form-check-control" @if (in_array($technology->id, old('technologies', $project_technologies ?? []))) checked @endif> 
+                <label for="technology-{{ $technology->id}}">{{ $technology->label}}</label> 
+                <br>
+                @endforeach
+              </div>
+
+
+
             <div class="row">
               <div class="col-12"> 
                 <label for="category_id" class="form-label">category</label>

@@ -29,7 +29,7 @@
       
       <div class="col-4">
         <div class="row">
-          <div class="col-12"> 
+          <div class="col-12 my-3"> 
             <label for="title" class="form-label">title</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" {{ old('title') }} />
             
@@ -43,6 +43,26 @@
           
             <div class="row">
               <div class="col-12"> 
+                <label class="form-label">technologies</label>
+                <div class="form-check @error('technologies') is-invalid @enderror p-0">
+                  @foreach ($technologies as $technology)
+                    <input
+                      type="checkbox"
+                      id="technology-{{ $technology->id }}"
+                      value="{{ $technology->id }}"
+                      name="technologies[]"
+                      class="form-check-control"
+                      @if (in_array($technology->id, old('technologies', $project_technologies ?? []))) checked @endif
+                    >
+                    <label for="technology-{{ $technology->id }}">
+                      {{ $technology->label }}
+                    </label>
+                    <br>
+                  @endforeach
+                </div>
+              </div>
+
+              <div class="col-12 my-3"> 
                 <label for="category_id" class="form-label">category</label>
                 <select class="form-select" name="category_id" id="category_id">
                   <option value="">Non categorizzato</option>
@@ -51,8 +71,8 @@
                   @endforeach
                 </select>
               </div>
-          
-          <div class="col-12">
+         
+          <div class="col-12 my-3">
             <label for="image" class="form-label">image</label>
             <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" {{ old('image') }} />
 

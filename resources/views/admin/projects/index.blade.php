@@ -18,6 +18,7 @@
                     <th scope="col">titolo</th>
                     <th scope="col">slug</th>
                     <th scope="col">label</th>
+                    <th scope="col">technologies</th>
                     <th scope="col">Abstract</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -29,6 +30,16 @@
                     <td>{{ $project->title }}</td>
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->category?->label }}</td>
+                    <td>
+                      @forelse($project->technologies as $technology)
+                       {{ $technology->label }} 
+                       @unless ($loop->last)
+                       , 
+                       @endunless
+                      @empty
+                       - 
+                      @endforelse
+                    </td>
                     <td>{{ $project->getAbstract() }}</td>
                     <td>
                         <a href="{{ route('admin.projects.show', $project) }}">

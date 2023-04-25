@@ -9,6 +9,12 @@
 <section class="card clearfix">
   <div class="card-body">
     <h2 class="text-muted text-secondary my-5">{{ $project->slug }}</h2>
+    <strong>Tags:</strong>
+    @forelse ($project->technologies as $technology)
+     <span style="background-color: {{ $project->technology?->color }}">{{ $technology->label }} @unless($loop->last) , @else . @endunless</span> 
+    @empty
+      Nessun tag associato
+    @endforelse
     <p>
       <strong>Categoria: </strong>
       <span class="badge rounded-pill" style="background-color: {{ $project->category?->color }}">{{ $project->category?->label }}</span>
