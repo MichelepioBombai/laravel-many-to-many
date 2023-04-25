@@ -20,11 +20,13 @@ class ProjectSeeder extends Seeder
     public function run(Faker $faker)
     {
         
+        $categories = Category::all()->pluck('id');
+        $categories[] = null;
+        
         
         for($i = 0; $i < 40; $i++)
         {
             $project = new Project;
-            $categories = Category::all()->pluck('id');
             $project->category_id = $faker->randomElement($categories);
             $project->title = $faker->catchPhrase();
             $project->slug = Str::of($project->title)->slug('-');
